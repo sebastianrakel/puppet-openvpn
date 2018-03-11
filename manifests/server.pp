@@ -696,7 +696,13 @@ define openvpn::server (
     }
   }
 
-  file { "${etc_directory}/openvpn/${name}.conf":
+  file { "${etc_directory}/${openvpn_server_configdir}":
+    ensure  => directory,
+    mode    => '0440',
+    recurse => true,
+  }
+
+  file { "${etc_directory}/${openvpn_server_configdir}/${name}.conf":
     owner   => root,
     group   => $root_group,
     mode    => '0440',
@@ -730,14 +736,14 @@ define openvpn::server (
 
   if $::openvpn::params::systemd {
     if $::openvpn::manage_service {
-      service { "openvpn@${name}":
+      service { "${openvpn_server_servicename}@${name}":
         ensure   => running,
         enable   => true,
         provider => 'systemd',
-        require  => File["${etc_directory}/openvpn/${name}.conf"],
+        require  => File["${etc_directory}/${openvpn_server_configdir}/${name}.conf"],
       }
       if !$extca_enabled and !$remote {
-        Openvpn::Ca[$ca_name] -> Service["openvpn@${name}"]
+        Openvpn::Ca[$ca_name] -> Service["${openvpn_server_servicename}@${name}"]
       }
     }
   }

@@ -15,7 +15,11 @@
 # limitations under the License.
 #
 class openvpn::params {
-
+  $openvpn_server_servicename = 'openvpn'
+  $openvpn_client_servicename = 'openvpn'
+  $openvpn_server_configdir   = 'openvpn'
+  $openvpn_client_configdir   = 'openvpn'
+  
   case $::osfamily {
     'RedHat': {
       $etc_directory       = '/etc'
@@ -106,6 +110,10 @@ class openvpn::params {
     }
     'Archlinux': {
       $etc_directory             = '/etc'
+      $openvpn_server_servicename = 'openvpn-server'
+      $openvpn_client_servicename = 'openvpn-client'
+      $openvpn_server_configdir   = "openvpn/server"
+      $openvpn_client_configdir   = "openvpn/client"
       $root_group                = 'root'
       $additional_packages       = ['easy-rsa']
       $easyrsa_source            = '/usr/share/easy-rsa/'
