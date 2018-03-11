@@ -15,11 +15,6 @@
 # limitations under the License.
 #
 class openvpn::params {
-  $openvpn_server_servicename = 'openvpn'
-  $openvpn_client_servicename = 'openvpn'
-  $openvpn_server_configdir   = 'openvpn'
-  $openvpn_client_configdir   = 'openvpn'
-  
   case $::osfamily {
     'RedHat': {
       $etc_directory       = '/etc'
@@ -29,6 +24,11 @@ class openvpn::params {
       $pam_module_path     = '/usr/lib64/openvpn/plugin/lib/openvpn-auth-pam.so'
       $easyrsa_source      = '/usr/share/easy-rsa/2.0'
       $namespecific_rclink = false
+      $openvpn_server_servicename = 'openvpn'
+      $openvpn_client_servicename = 'openvpn'
+      $openvpn_server_configdir   = 'openvpn'
+      $openvpn_client_configdir   = 'openvpn'
+  
 
       # Redhat/Centos >= 7.0
       if(versioncmp($::operatingsystemrelease, '7.0') >= 0) and $::operatingsystem != 'Amazon' {
@@ -53,6 +53,10 @@ class openvpn::params {
       $group               = 'nogroup'
       $link_openssl_cnf    = true
       $namespecific_rclink = false
+      $openvpn_server_servicename = 'openvpn'
+      $openvpn_client_servicename = 'openvpn'
+      $openvpn_server_configdir   = 'openvpn'
+      $openvpn_client_configdir   = 'openvpn'
 
       case $::operatingsystem {
         'Debian': {
@@ -136,6 +140,10 @@ class openvpn::params {
           $link_openssl_cnf          = true
           $pam_module_path           = '/usr/lib/openvpn/openvpn-auth-pam.so'
           $namespecific_rclink       = false
+          $openvpn_server_servicename = 'openvpn'
+          $openvpn_client_servicename = 'openvpn'
+          $openvpn_server_configdir   = 'openvpn'
+          $openvpn_client_configdir   = 'openvpn'
         }
         default: {
           fail("Unsupported OS/Distribution ${::osfamily}/${::operatingsystem}")
@@ -152,6 +160,10 @@ class openvpn::params {
       $easyrsa_source      = '/usr/local/share/easy-rsa'
       $namespecific_rclink = true
       $systemd             = false
+      $openvpn_server_servicename = 'openvpn'
+      $openvpn_client_servicename = 'openvpn'
+      $openvpn_server_configdir   = 'openvpn'
+      $openvpn_client_configdir   = 'openvpn'
     }
     default: {
       fail("Not supported OS family ${::osfamily}")
