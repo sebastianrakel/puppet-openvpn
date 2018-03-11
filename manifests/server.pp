@@ -545,7 +545,7 @@ define openvpn::server (
 
   if $::openvpn::manage_service {
     if $::openvpn::params::systemd {
-      $lnotify = Service["${openvpn_server_servicename}@${name}"]
+      $lnotify = Service["${::openvpn::params::openvpn_server_servicename}@${name}"]
     } elsif $::openvpn::params::namespecific_rclink {
       $lnotify = Service["openvpn_${name}"]
     } else {
@@ -696,7 +696,7 @@ define openvpn::server (
     }
   }
 
-  file { "${etc_directory}/${openvpn_server_configdir}/${name}.conf":
+  file { "${etc_directory}/${::openvpn::params::openvpn_server_configdir}/${name}.conf":
     owner   => root,
     group   => $root_group,
     mode    => '0440',
@@ -730,14 +730,14 @@ define openvpn::server (
 
   if $::openvpn::params::systemd {
     if $::openvpn::manage_service {
-      service { "${openvpn_server_servicename}@${name}":
+      service { "${::openvpn::params::openvpn_server_servicename}@${name}":
         ensure   => running,
         enable   => true,
         provider => 'systemd',
-        require  => File["${etc_directory}/${openvpn_server_configdir}/${name}.conf"],
+        require  => File["${etc_directory}/${::openvpn::params::openvpn_server_configdir}/${name}.conf"],
       }
       if !$extca_enabled and !$remote {
-        Openvpn::Ca[$ca_name] -> Service["${openvpn_server_servicename}@${name}"]
+        Openvpn::Ca[$ca_name] -> Service["${::openvpn::params::openvpn_server_servicename}@${name}"]
       }
     }
   }
