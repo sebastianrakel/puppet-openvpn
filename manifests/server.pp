@@ -696,12 +696,6 @@ define openvpn::server (
     }
   }
 
-  file { "${etc_directory}/${openvpn_server_configdir}":
-    ensure  => directory,
-    mode    => '0440',
-    recurse => true,
-  }
-
   file { "${etc_directory}/${openvpn_server_configdir}/${name}.conf":
     owner   => root,
     group   => $root_group,
